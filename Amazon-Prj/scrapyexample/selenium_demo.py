@@ -9,7 +9,7 @@ page_url = "https://siccode.com/"
 
 driver = webdriver.Chrome('/Users/dorehkazemisefat/Desktop/amazon-test/scrapyexample4/chromedriver')
 
-company_list = ["Zappos Electronic Shopping And Mail Order ","Woot Radio Stations","Whole Foods Market Inc Supermarkets"]
+company_list = ["Zappos.com ","Woot inc Electronic Shopping and Mail-Order Houses","Whole Foods Market Inc Supermarkets"]
 
 for company in company_list:
     driver.get(page_url)
