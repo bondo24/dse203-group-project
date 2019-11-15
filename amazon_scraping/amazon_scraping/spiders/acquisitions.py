@@ -48,5 +48,7 @@ class AcquisitionsSpider(scrapy.Spider):
             acquisition['products'] = None
         acquisition['number_of_employees'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Number of employees") or contains(text(), "Employees")]/ancestor::tr/td/text()').get()
         acquisition['number_of_employees'] = re.sub('[^0-9]','', acquisition['number_of_employees'])
-        # acquisition['location'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Headquarters")]/ancestor::tr/td/string()').get()
+        acquisition['location'] = infobox_xpath.xpath('./tbody/tr[*]/th[contains(text(), "Headquarters")]/ancestor::tr/td//@title').get()
+        # TODO: right now it only considers a single founder
+        acquisition['founder'] = infobox_xpath.xpath('./tbody/tr[*]/th[contains(text(), "Founder") or contains(text(), "Key")]/ancestor::tr/td//text()').get()
         acquisition['summary'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]/b[contains(text(), "{}")]/..//text()'.format(title)).getall())

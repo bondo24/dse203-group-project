@@ -6,31 +6,38 @@ class CompetitorsSpider(scrapy.Spider):
 
     name = 'competitors'
 
-    competition = ['Netflix', 'Fedex', 'Etsy']
+    # competition = ['Netflix', 'Fedex', 'Etsy']
+    # competition = ['Netflix', 'Fedex', 'Etsy']
+    # df = pd.DataFrame()
+    # se = pd.Series(competition)
+    # df['competitor'] = se.values
     # start_urls = ['https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Amazon']
 
-    # def parse(self, response):
-    #     acquisitions_xpath = response.xpath('//*[@id="mw-content-text"]/div/table[1]')[0]
-    #     # only find the ones that have an href
-    #     # for acquisition in acquisitions_xpath.xpath('./tbody/tr[*]/td[2]/a/@href'):
-    #     #     acquisition_page = response.urljoin(acquisition.get())
-    #     #     yield response.follow(acquisition_page, self.parse_acquisition)
-    #
-    #     df = pd.read_html(acquisitions_xpath.get(), header=0)[0]
-    #     df['Acquired for (USD)'] = df['Acquired for (USD)'].replace('[\$,—]', '', regex=True).replace(r'', 0).astype(float)
-    #     # convert date str to date format
-    #     df = df.sort_values(by='Used as or integrated with', ascending=False)[:3]
-    #     # company_number = df['Number']
-    #     # for n in company_number.values:
-    #     for index, row in df.iterrows():
-    #         name = row['Company']
-    #         self.output['acquisitions'][name] = {}
-    #         acquisition = self.output['acquisitions'][name]
-    #
-    #         acquisition['acquired_on'] = row['Acquired on']
-    #         acquisition['acquired_for'] = row['Acquired for (USD)']
-    #         acquisition_href = acquisitions_xpath.xpath("./tbody/tr[{}]/td[6]/a/@href".format(row['Number']+1))
-    #         yield response.follow(response.urljoin(acquisition_href.get()), self.parse_acquisition, cb_kwargs={'acquisition': acquisition})
+    def parse(self, response):
+        competition = ['Netflix', 'Fedex', 'Etsy']
+        df = pd.DataFrame()
+        se = pd.Series(competition)
+        df['Company'] = se.values
+        competitors_xpath = response.xpath('//*[@id="mw-content-text"]/div/table[1]')[0]
+        # only find the ones that have an href
+        # for acquisition in acquisitions_xpath.xpath('./tbody/tr[*]/td[2]/a/@href'):
+        #     acquisition_page = response.urljoin(acquisition.get())
+        #     yield response.follow(acquisition_page, self.parse_acquisition)
+
+        # df = pd.read_html(competitors_xpath.get(), header=0)[0]
+        # df['Acquired for (USD)'] = df['Acquired for (USD)'].replace('[\$,—]', '', regex=True).replace(r'', 0).astype(float)
+        # convert date str to date format
+        # df = df.sort_values(by='Used as or integrated with', ascending=False)[:3]
+        # company_number = df['Number']
+        # for n in company_number.values:
+        for index, row in df.iterrows():
+            name = row['Company']
+            self.output['competitor'][name] = {}
+            competitor = self.output['competitor'][name]
+
+
+            # competitor_href = competitors_xpath.xpath("./tbody/tr[{}]/td[6]/a/@href".format(row['Number']+1))
+            yield response.follow(response.urljoin("https://en.wikipedia.org/wiki/"), self.parse_competitor, cb_kwargs={'competitor': competitor})
 
     def parse_competitor(self, response, competitor):
         title = response.xpath('//*[@id="firstHeading"]/text()').get()
