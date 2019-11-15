@@ -2,7 +2,7 @@ import scrapy
 import re
 import pandas as pd
 
-class AcquisitionsSpider(scrapy.Spider):
+class CompetitorsSpider(scrapy.Spider):
 
     name = 'competitors'
 
