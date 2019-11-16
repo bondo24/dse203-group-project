@@ -23,7 +23,7 @@ graph_generator.create_graph()
 graph_generator.create_relationships(output['acquisitions'])
 
 
-from worldcloud_generator import generate_wordcloud
+from wordcloud_generator import generate_wordcloud
 
 generate_worldcloud(output)
 
