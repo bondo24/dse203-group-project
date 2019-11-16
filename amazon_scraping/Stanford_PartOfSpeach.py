@@ -44,6 +44,7 @@ def stanford_pos(output):
         return pd.DataFrame(parsed_text)
 
     NN_df = {}
+    NNP_df = {}
     j = 'acquisitions'
     if j == 'acquisitions':
         for i in output[j]:
@@ -52,9 +53,20 @@ def stanford_pos(output):
             #extract pos
             pos_df = extract_pos(doc)
 
-            NN_df[i] = pos_df[pos_df['pos'] == 'NNP']
+            NN_df[i] = pos_df[pos_df['pos'] == 'NN']
+            NNP_df[i] = pos_df[pos_df['pos'] == 'NNP']
+            for row in NNP_df[i]['word']:
+                NNP_df[i] = NNP_df[i][NNP_df[i]['word'] != str(i).lower()]
+                NNP_df[i] = NNP_df[i][NNP_df[i]['word'] != str(str(i) + '.com').lower()]
+                NNP_df[i] = NNP_df[i][NNP_df[i]['word'] !=  'amazon']
+                if row in output[j][i]['founder'].lower().split():
+                    NNP_df[i] = NNP_df[i][NNP_df[i]['word'] != row]
+                if row in output[j][i]['location'].lower().replace(',', '').split():
+                    NNP_df[i] = NNP_df[i][NNP_df[i]['word'] != row]
+
             for row in NN_df[i]['word']:
                 NN_df[i] = NN_df[i][NN_df[i]['word'] != str(i).lower()]
+                NN_df[i] = NN_df[i][NN_df[i]['word'] != str(str(i) + '.com').lower()]
                 NN_df[i] = NN_df[i][NN_df[i]['word'] !=  'amazon']
                 if row in output[j][i]['founder'].lower().split():
                     NN_df[i] = NN_df[i][NN_df[i]['word'] != row]
@@ -62,6 +74,7 @@ def stanford_pos(output):
                     NN_df[i] = NN_df[i][NN_df[i]['word'] != row]
 
     print(NN_df)
+    print(NNP_df)
 
 
     # print(pos_df[pos_df['pos'] == 'NN'])
