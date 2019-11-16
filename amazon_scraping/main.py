@@ -32,7 +32,7 @@ from wordcloud_generator import generate_wordcloud
 generate_wordcloud(output)
 
 from Stanford_PartOfSpeach import stanford_pos
-# stanford_pos(output)
+stanford_pos(output)
 
 
 # just for debugging
