@@ -1,3 +1,4 @@
+import pandas as pd
 import stanfordnlp
 stanfordnlp.download('en')
 
