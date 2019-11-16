@@ -8,10 +8,12 @@ def scrape():
     # modify scrapy_settings here if needed
 
     output = {
+              "parent_company": {},
               "acquisitions": {},
               "competitors": {}
              }
     process = CrawlerProcess(settings=scrapy_settings)
+    process.crawl("parent_company", output=output)
     process.crawl("acquisitions", output=output)
     process.crawl("competitors", output=output)
     process.start()

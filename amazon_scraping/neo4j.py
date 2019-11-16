@@ -14,9 +14,8 @@ class GraphGenerator:
         config['password'] = config.get('password', 'password')
         return config
 
-    def create_graph(self, company=None):
-        # hard coding amazon for now
-        amz_node = Node('company', title='Amazon')
+    def create_graph(self, company):
+        amz_node = self.create_company_node(company['organization'], company)
         self.parent_company_node = amz_node
         self.graph.create(amz_node)
 
@@ -24,18 +23,21 @@ class GraphGenerator:
         if self.parent_company_node is not None:
             merged_by = Relationship.type('MergedBy')
             for company, value in companies.items():
-                node = Node('company',
-                            title=company,
-                            acquired_on=value['acquired_on'],
-                            acquired_for=value['acquired_for'],
-                            organization=value['organization'],
-                            founded=value['founded'],
-                            industry=value['industry'],
-                            products=value['products'],
-                            number_of_employees=value['number_of_employees'],
-                            location=value['location'],
-                            founder=value['founder'],
-                            summary=value['summary'],
-                            )
+                node = self.create_company_node(company, value)
                 self.graph.create(node)
                 self.graph.merge(merged_by(node, self.parent_company_node), 'company', 'title')
+
+    def create_company_node(self, name, company):
+        return Node('company',
+            title=name,
+            acquired_on=company.get('acquired_on', None),
+            acquired_for=company.get('acquired_for', None),
+            organization=company.get('organization', None),
+            founded=company['founded'],
+            industry=company['industry'],
+            products=company['products'],
+            number_of_employees=company['number_of_employees'],
+            location=company['location'],
+            founder=company['founder'],
+            summary=company['summary'],
+            )
