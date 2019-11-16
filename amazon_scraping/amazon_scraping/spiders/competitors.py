@@ -43,11 +43,13 @@ class CompetitorsSpider(scrapy.Spider):
                 # acquisition['location'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Headquarters")]/ancestor::tr/td/string()').get()
             competitor['summary'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]//text()').getall())
             # competitor['number_of_employees']
-            line = competitor['summary'].text()
-            import re
-            match = re.search('(\d+) employees', line)
+            line = competitor['summary']
+
+            match = re.findall(r"(\d+) employees", line)
+            print(match)
+            # match = re.search('(\d+) employees', line)
             if match:
-                competitor['number_of_employees'] = match.group(1)
+                competitor['number_of_employees'] = match[0]
 
 
 
