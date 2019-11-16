@@ -43,7 +43,7 @@ def stanford_pos(output):
         # return a dataframe of pos and text
         return pd.DataFrame(parsed_text)
 
-    NN_df = []
+    NN_df = {}
     j = 'acquisitions'
     if j == 'acquisitions':
         for i in output[j]:
@@ -52,11 +52,13 @@ def stanford_pos(output):
             #extract pos
             pos_df = extract_pos(doc)
 
-            NN_df[i] = pos_df[pos_df['pos'] == 'NN']
+            NN_df[i] = pos_df[pos_df['pos'] == 'NNP']
             for row in NN_df[i]['word']:
                 NN_df[i] = NN_df[i][NN_df[i]['word'] != str(i).lower()]
                 NN_df[i] = NN_df[i][NN_df[i]['word'] !=  'amazon']
-                if row in output['acquisitions']['Woot']['founder'].lower().split():
+                if row in output[j][i]['founder'].lower().split():
+                    NN_df[i] = NN_df[i][NN_df[i]['word'] != row]
+                if row in output[j][i]['location'].lower().replace(',', '').split():
                     NN_df[i] = NN_df[i][NN_df[i]['word'] != row]
 
     print(NN_df)

@@ -10,6 +10,10 @@ with open('config.yml', 'r') as config_yaml:
 # used just for human readable json
 import json
 
+import os
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
+
+
 # scraping
 from company_scraper import scrape
 
@@ -26,6 +30,10 @@ graph_generator.create_relationships(output['acquisitions'])
 from wordcloud_generator import generate_wordcloud
 
 generate_wordcloud(output)
+
+from Stanford_PartOfSpeach import stanford_pos
+stanford_pos(output)
+
 
 # just for debugging
 print(json.dumps(output["parent_company"], indent=4))
