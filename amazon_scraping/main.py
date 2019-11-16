@@ -51,7 +51,8 @@ print(json.dumps(output["acquisitions"], indent=4))
 from neo4j import GraphGenerator
 
 graph_generator = GraphGenerator(config['neo4j'])
-graph_generator.create_graph(output['acquisitions'])
+graph_generator.create_graph()
+graph_generator.create_relationships(output['acquisitions'])
 
 # just for debugging
 print(json.dumps(output["competitors"], indent=4))
