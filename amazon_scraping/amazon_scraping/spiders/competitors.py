@@ -60,14 +60,14 @@ class CompetitorsSpider(scrapy.Spider):
             competitor['industry'] = list(filter(lambda text: text != '\n', competitor['industry']))
             # some don't have products
             try:
-               competitor['products'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Products")]/ancestor::tr/td/text()').get().split(', ')
+                competitor['products'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Products")]/ancestor::tr/td/text()').get().split(', ')
             except AttributeError:
                 competitor['products'] = None
 
+            try:
+                competitor['number_of_employees'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Number of employees") or contains(text(), "Employees")]/ancestor::tr/td/text()').get()
+                competitor['number_of_employees'] = re.sub('[^0-9]','', competitor['number_of_employees'])
             except AttributeError:
-               competitor['number_of_employees'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Number of employees") or contains(text(), "Employees")]/ancestor::tr/td/text()').get()
-               competitor['number_of_employees'] = re.sub('[^0-9]','', competitor['number_of_employees'])
-            except AttributeError:
-               competitor['number_of_employees'] = None
+                competitor['number_of_employees'] = None
          # acquisition['location'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Headquarters")]/ancestor::tr/td/string()').get()
             competitor['summary'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]/b[contains(text(), "{}")]/..//text()'.format(title)).getall())
