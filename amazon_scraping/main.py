@@ -25,7 +25,7 @@ graph_generator.create_relationships(output['acquisitions'])
 
 from wordcloud_generator import generate_wordcloud
 
-generate_worldcloud(output)
+generate_wordcloud(output)
 
 # just for debugging
 print(json.dumps(output["competitors"], indent=4))
