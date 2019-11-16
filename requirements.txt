@@ -1,2 +1,4 @@
 py2neo
 PyYAML
+nltk
+wordcloud
