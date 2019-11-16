@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-import scrapy
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
-
 # for configuration management
 import yaml
 
@@ -11,14 +7,13 @@ import yaml
 with open('config.yml', 'r') as config_yaml:
     config = yaml.load(config_yaml)
 
-import scrapy
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
-import pandas as pd
-
 # used just for human readable json
 import json
-import re
+
+# scraping
+from company_scraper import scrape
+
+output = scrape()
 
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -30,23 +25,6 @@ from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 import matplotlib.pyplot as plt
-
-
-scrapy_settings = get_project_settings()
-# modify scrapy_settings here if needed
-
-output = {
-          "acquisitions": {},
-          "competitors": {}
-         }
-process = CrawlerProcess(settings=scrapy_settings)
-process.crawl("acquisitions", output=output)
-process.crawl("competitors", output=output)
-process.start()
-
-# just for debugging
-print(json.dumps(output["acquisitions"], indent=4))
-
 
 from neo4j import GraphGenerator
 
