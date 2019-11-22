@@ -16,8 +16,9 @@ class NaicsCodeSpider(scrapy.Spider):
         urls.append((self.output['parent_company'], self.generate_naics_url(self.output['parent_company']['organization'])))
         for name, company in self.output['acquisitions'].items():
             urls.append((company, self.generate_naics_url(company['organization'])))
+        for name, company in self.output['competitors'].items():
+            urls.append((company, self.generate_naics_url(company['organization'])))
         for url in urls:
-            print(url[1], '\n')
             yield scrapy.Request(url=url[1], callback=self.parse, cb_kwargs={'company': url[0]})
 
     def parse(self, response, company):

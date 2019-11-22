@@ -24,7 +24,7 @@ from neo4j import GraphGenerator
 
 graph_generator = GraphGenerator(config['neo4j'])
 graph_generator.create_graph(output['parent_company'])
-graph_generator.create_relationships(output['acquisitions'])
+graph_generator.create_relationships(output['acquisitions'], output['competitors'])
 
 
 from wordcloud_generator import generate_wordcloud
@@ -37,4 +37,5 @@ stanford_pos(output)
 
 # just for debugging
 print(json.dumps(output["parent_company"], indent=4))
+print(json.dumps(output["acquisitions"], indent=4))
 print(json.dumps(output["competitors"], indent=4))
