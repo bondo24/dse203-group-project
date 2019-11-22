@@ -1,5 +1,13 @@
 import scrapy
-from scrapy.crawler import CrawlerProcess
+from scrapy.crawler import CrawlerRunner
+from twisted.internet import reactor, defer
+from scrapy.utils.log import configure_logging
+
+
+from amazon_scraping.spiders.parent_company import ParentCompanySpider
+from amazon_scraping.spiders.acquisitions import AcquisitionsSpider
+from amazon_scraping.spiders.competitors import CompetitorsSpider
+from amazon_scraping.spiders.naics_code import NaicsCodeSpider
 from scrapy.utils.project import get_project_settings
 
 
@@ -12,11 +20,16 @@ def scrape():
               "acquisitions": {},
               "competitors": {}
              }
-    process = CrawlerProcess(settings=scrapy_settings)
-    process.crawl("parent_company", output=output)
-    process.crawl("acquisitions", output=output)
-    process.crawl("competitors", output=output)
-    process.start()
+    configure_logging()
+    runner = CrawlerRunner(settings=scrapy_settings)
 
-    # just for debugging
+    @defer.inlineCallbacks
+    def crawl():
+        yield runner.crawl(ParentCompanySpider, output=output)
+        yield runner.crawl(AcquisitionsSpider, output=output)
+        yield runner.crawl(CompetitorsSpider, output=output)
+        yield runner.crawl(NaicsCodeSpider, output=output)
+        reactor.stop()
+    crawl()
+    reactor.run()
     return output
