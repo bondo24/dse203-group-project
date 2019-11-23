@@ -31,3 +31,4 @@ class ParentCompanySpider(scrapy.Spider):
         # TODO: right now it only considers a single founder
         parent_company['founder'] = infobox_xpath.xpath('./tbody/tr[*]/th[contains(text(), "Founder") or contains(text(), "Key")]/ancestor::tr/td//text()').get()
         parent_company['summary'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]/b[contains(text(), "{}")]/..//text()'.format(parent_company['organization'])).getall())
+        parent_company['raw_text'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]//text()').getall())

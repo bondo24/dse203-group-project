@@ -52,3 +52,4 @@ class AcquisitionsSpider(scrapy.Spider):
         # TODO: right now it only considers a single founder
         acquisition['founder'] = infobox_xpath.xpath('./tbody/tr[*]/th[contains(text(), "Founder") or contains(text(), "Key")]/ancestor::tr/td//text()').get()
         acquisition['summary'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]/b[contains(text(), "{}")]/..//text()'.format(title)).getall())
+        acquisition['raw_text'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]//text()').getall())

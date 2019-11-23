@@ -25,6 +25,8 @@ from neo4j import GraphGenerator
 graph_generator = GraphGenerator(config['neo4j'])
 graph_generator.create_graph(output['parent_company'])
 graph_generator.create_relationships(output['acquisitions'], output['competitors'])
+#using stubbed function for now
+graph_generator.create_misc_relationships(output.get('relationships', None))
 
 
 from wordcloud_generator import generate_wordcloud

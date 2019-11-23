@@ -31,6 +31,22 @@ class GraphGenerator:
                 node = self.create_company_node(company, value)
                 self.graph.create(node)
                 self.graph.merge(compete_with(node, self.parent_company_node), 'company', 'title')
+    def create_misc_relationships(self, relationships):
+        # relationships should be a list containing [(source, relationship, target)]
+        if relationships is not None:
+            for r in relationships:
+                source = r[0]
+                relationship = r[1]
+                target = [2]
+                rel_type = Relationship.type(relationship)
+                node_source = Node(source)
+                node_target = Node(target)
+                self.graph.create(node_source)
+                self.graph.create(node_target)
+                # should probably find a way to connect existing nodes to their correpsonding relationship
+                # i.e. "Amazon is a company" should tie the "is a" relationship to the original Amazon node
+                self.graph.merge(rel_type(node_source, node_target))
+            
 
     def create_company_node(self, name, company):
         return Node('company',
