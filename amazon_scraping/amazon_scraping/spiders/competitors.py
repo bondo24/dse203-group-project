@@ -71,4 +71,4 @@ class CompetitorsSpider(scrapy.Spider):
                 competitor['number_of_employees'] = None
          # acquisition['location'] = infobox_xpath.xpath('./tbody/tr[*]//*[contains(text(), "Headquarters")]/ancestor::tr/td/string()').get()
             competitor['summary'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]/b[contains(text(), "{}")]/..//text()'.format(title)).getall())
-            competitor['raw_text'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]//text()').getall())
+        competitor['raw_text'] = ''.join(response.xpath('//*[@id="mw-content-text"]/div/p[*]//text()').getall())

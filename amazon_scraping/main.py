@@ -26,9 +26,23 @@ graph_generator = GraphGenerator(config['neo4j'])
 graph_generator.create_graph(output['parent_company'])
 graph_generator.create_relationships(output['acquisitions'], output['competitors'])
 #using stubbed function for now
-graph_generator.create_misc_relationships(output.get('relationships', None))
 
 
+from text_processing import subject_verb_object_triples
+
+
+triples = subject_verb_object_triples(output['parent_company']['raw_text'])
+graph_generator.create_misc_relationships(triples, output['parent_company']['organization'])
+# for t in triples:
+#    print(output['parent_company']['organization'], t)
+
+for name, c in output['acquisitions'].items():
+    triples = subject_verb_object_triples(c['raw_text'])
+    graph_generator.create_misc_relationships(triples, name)
+
+for name, c in output['competitors'].items():
+    triples = subject_verb_object_triples(c['raw_text'])
+    graph_generator.create_misc_relationships(triples, name)
 from wordcloud_generator import generate_wordcloud
 
 generate_wordcloud(output)
