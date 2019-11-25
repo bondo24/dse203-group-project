@@ -3,3 +3,4 @@ PyYAML
 nltk
 wordcloud
 stanfordnlp
+textacy
