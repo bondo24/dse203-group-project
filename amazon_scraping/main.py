@@ -43,6 +43,9 @@ for name, c in output['acquisitions'].items():
 for name, c in output['competitors'].items():
     triples = subject_verb_object_triples(c['raw_text'])
     graph_generator.create_misc_relationships(triples, name)
+
+graph_generator.create_naics_tree()
+
 from wordcloud_generator import generate_wordcloud
 
 generate_wordcloud(output)

@@ -1,4 +1,5 @@
 from py2neo import Graph, Node, Relationship, NodeMatcher
+import pandas as pd
 
 class GraphGenerator:
     def __init__(self, config):
@@ -91,3 +92,28 @@ class GraphGenerator:
             summary=company['summary'],
             )
 
+    def create_naics_tree(self):
+        df = pd.read_csv('NAICS-Codes.txt', sep='\t')
+        root_node = Node('Root', title='Root')
+        subClassOf = Relationship.type("subClassOf")
+
+        for index, row in df.iterrows():
+            code = row['Codes']
+            if '-' in code:
+                start_code, end_code = map(int, code.split('-'))
+                for code in range(start_code, end_code+1):
+                    child = Node('Subclass', title=row['Titles'], naics_code=code)
+                    self.graph.merge(subClassOf(child, root_node), 'Subclass', 'naics_code')
+                continue
+            code = int(row['Codes'])
+            child = Node('Subclass', title=row['Titles'], naics_code=code)
+            parent = None
+            if len(str(code)) > 2:
+                for i in range(len(str(code))):
+                    parent = self.matcher.match('Subclass', naics_code=code//(10**(i+1))).first()
+                    if parent is not None:
+                        break
+            if parent is None:
+                self.graph.merge(subClassOf(child, root_node), 'Root', 'title')
+            else:
+                self.graph.merge(subClassOf(child, parent), 'Subclass', 'naics_code')

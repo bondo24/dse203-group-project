@@ -4,3 +4,4 @@ nltk
 wordcloud
 stanfordnlp
 textacy
+xlrd
