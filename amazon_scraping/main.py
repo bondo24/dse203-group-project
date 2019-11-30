@@ -32,29 +32,50 @@ from text_processing import subject_verb_object_triples
 
 
 triples = subject_verb_object_triples(output['parent_company']['raw_text'])
-graph_generator.create_misc_relationships(triples, output['parent_company']['organization'])
+
+tripes = []
+for row in triples:
+    lst = list(row)
+    lst[1] = row[1].lemma_
+    t = tuple(lst)
+    tripes.append(t)
+
+graph_generator.create_misc_relationships(tripes, output['parent_company']['organization'])
 # for t in triples:
 #    print(output['parent_company']['organization'], t)
 
 for name, c in output['acquisitions'].items():
     triples = subject_verb_object_triples(c['raw_text'])
-    graph_generator.create_misc_relationships(triples, name)
+    tripes = []
+    for row in triples:
+        lst = list(row)
+        lst[1] = row[1].lemma_
+        t = tuple(lst)
+        tripes.append(t)
+    graph_generator.create_misc_relationships(tripes, name)
 
 for name, c in output['competitors'].items():
     triples = subject_verb_object_triples(c['raw_text'])
-    graph_generator.create_misc_relationships(triples, name)
-
+    tripes = []
+    for row in triples:
+        lst = list(row)
+        lst[1] = row[1].lemma_
+        t = tuple(lst)
+        tripes.append(t)
+    print(tripes)
+    graph_generator.create_misc_relationships(tripes, name)
+#
 graph_generator.create_naics_tree()
 
 from wordcloud_generator import generate_wordcloud
 
 generate_wordcloud(output)
-
-from Stanford_PartOfSpeach import stanford_pos
-stanford_pos(output)
-
-
-# just for debugging
-print(json.dumps(output["parent_company"], indent=4))
-print(json.dumps(output["acquisitions"], indent=4))
-print(json.dumps(output["competitors"], indent=4))
+#
+# from Stanford_PartOfSpeach import stanford_pos
+# stanford_pos(output)
+#
+#
+# # just for debugging
+# print(json.dumps(output["parent_company"], indent=4))
+# print(json.dumps(output["acquisitions"], indent=4))
+# print(json.dumps(output["competitors"], indent=4))
