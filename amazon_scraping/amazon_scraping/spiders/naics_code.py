@@ -8,6 +8,7 @@ class NaicsCodeSpider(scrapy.Spider):
     def generate_naics_url(self, org_name):
         root_url = 'https://siccode.com/business/'
         end_url = re.split(r'\W+', org_name)
+        end_url = [segment if segment != 'Corporation' else 'Corp' for segment in end_url]
         end_url = list(filter(None, end_url))
         return root_url + '-'.join(end_url)
 
