@@ -77,20 +77,24 @@ class GraphGenerator:
             
 
     def create_company_node(self, name, company):
-        return Node('company',
+        belongs_to = Relationship.type('BelongsTo')
+        node = Node('company',
             title=name,
             acquired_on=company.get('acquired_on', None),
             acquired_for=company.get('acquired_for', None),
             organization=company.get('organization', None),
             founded=company.get('founded', None),
-            industry=company['industry'],
-            products=company['products'],
-            number_of_employees=company['number_of_employees'],
+            industry=company.get('industry'),
+            products=company.get('products'),
+            number_of_employees=company.get('number_of_employees'),
             location=company.get('location', None),
             founder=company.get('founder', None),
             naics_code=company.get('naics_code', None),
-            summary=company['summary'],
+            summary=company.get('summary'),
             )
+        naics_node = self.matcher.match('Subclass', naics_code=company.get('naics_code')).first()
+        self.graph.merge(belongs_to(node, naics_node), 'company', 'title')
+        return node
 
     def create_naics_tree(self):
         df = pd.read_csv('NAICS-Codes.txt', sep='\t')

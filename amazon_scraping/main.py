@@ -22,7 +22,9 @@ output = scrape()
 # generate neo4j graph
 from neo4j import GraphGenerator
 
+
 graph_generator = GraphGenerator(config['neo4j'])
+graph_generator.create_naics_tree()
 graph_generator.create_graph(output['parent_company'])
 graph_generator.create_relationships(output['acquisitions'], output['competitors'])
 #using stubbed function for now
@@ -65,7 +67,6 @@ for name, c in output['competitors'].items():
     print(tripes)
     graph_generator.create_misc_relationships(tripes, name)
 #
-graph_generator.create_naics_tree()
 
 from wordcloud_generator import generate_wordcloud
 
