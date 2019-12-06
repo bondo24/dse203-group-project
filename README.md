@@ -17,6 +17,13 @@ pip install -r requirements.txt
 python -m spacy download en
 ```
 
+# Configuration
+Copy sample.config.yml to config.yml and update the properties to correspond to your environment.
+
+```
+cp sample.config.yml config.yml
+```
+
 # Generating the Knowledge Graph
 Running the main.py script will scrape all the information for Amazon and 3 of its acquisitions and 3 of its competitors from Wikipedia and SICCODE. It will generate a Neo4j graph containing relationships for the companies. It will create a NAICS code tree that connects the corresponding companies together.
 
